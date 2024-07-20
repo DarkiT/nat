@@ -262,10 +262,11 @@ func (u *upnp_NAT) AddPortMapping(ctx context.Context, protocol string, internal
 	}
 
 	for i := 0; i < 3; i++ {
-		err = u.c.AddPortMappingCtx(ctx, "", uint16(internalPort), mapProtocol(protocol), uint16(internalPort), ip.String(), true, description, timeoutInSeconds)
+		externalPort := randomPort()
+		err = u.c.AddPortMappingCtx(ctx, "", uint16(externalPort), mapProtocol(protocol), uint16(internalPort), ip.String(), true, description, timeoutInSeconds)
 		if err == nil {
-			u.ports[internalPort] = internalPort
-			return internalPort, nil
+			u.ports[internalPort] = externalPort
+			return externalPort, nil
 		}
 	}
 

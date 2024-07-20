@@ -4,6 +4,8 @@ package nat
 import (
 	"context"
 	"errors"
+	"math"
+	"math/rand"
 	"net"
 	"time"
 )
@@ -114,4 +116,10 @@ func DiscoverGateway(ctx context.Context) (NAT, error) {
 		bestNAT = nat
 	}
 	return bestNAT, nil
+}
+
+var random = rand.New(rand.NewSource(time.Now().UnixNano()))
+
+func randomPort() int {
+	return random.Intn(math.MaxUint16-10000) + 10000
 }
